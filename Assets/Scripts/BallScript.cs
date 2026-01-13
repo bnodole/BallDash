@@ -23,13 +23,20 @@ public class BallScript : MonoBehaviour
 
     public GameObject deathUI;
     public Text highscore;
+    public Text newhighscore;
     public Text currentScoreUI;
     public Text currentCoinsUI;
     public Text totalCoinsUI;
 
 
     public GameObject pauseUI;
+    public GameObject GameUI;
     bool isGamePaused;
+    bool hasChance = true;
+    public Vector3 lastSafePosition;
+
+    public AudioSource gameSounds;
+    public AudioClip hitSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +46,12 @@ public class BallScript : MonoBehaviour
         totalCoins = PlayerPrefs.GetInt("Coins");
         deathUI.SetActive(false);
         pauseUI.SetActive(false);
+    }
+
+    void FixedUpdate()
+    {
+        // Save position BEFORE physics movement
+        lastSafePosition = ballRigidBody.position;
     }
 
     // Update is called once per frame
@@ -54,16 +67,19 @@ public class BallScript : MonoBehaviour
     {
         //Continuous ball movement
         ballRigidBody.velocity = new Vector3(ballRigidBody.velocity.x, ballRigidBody.velocity.y, speed);
-        //float horizontalMovement = Mathf.Ceil( Input.GetAxis("Horizontal"))*3;
-
+        
         if (Input.GetKeyDown(KeyCode.A))
         {
             if(horizontalMovement > -3)
-                horizontalMovement -= 3; 
+            {
+                horizontalMovement -= 3;
+            }
         }if (Input.GetKeyDown(KeyCode.D))
         {
             if (horizontalMovement < 3)
+            {
                 horizontalMovement += 3;
+            }
         }
         var lerpXValue = Vector3.Lerp(ballRigidBody.transform.position,new Vector3(horizontalMovement,0,0),10*Time.deltaTime);
 
@@ -82,7 +98,7 @@ public class BallScript : MonoBehaviour
 
     void ScoreManager()
     {
-        distance = transform.position.z - startPosition.z;
+        distance = Vector3.Distance(transform.position , startPosition);
         currentScore = (int)distance*10;
         scoreText.text = currentScore.ToString();
     }
@@ -95,7 +111,7 @@ public class BallScript : MonoBehaviour
         {
             highScore = currentScore;
             PlayerPrefs.SetInt("Highscore", highScore);
-            Debug.Log("NEW HIGHSCORE");
+            newhighscore.text = "New HighSore";
         }
         totalCoins += coinManager.currentCoins;
         PlayerPrefs.SetInt("Coins", totalCoins);
@@ -103,11 +119,10 @@ public class BallScript : MonoBehaviour
         gamePlayUI.SetActive(false);
         deathUI.SetActive(true);
         Time.timeScale = 0f;
-        highscore.text = "Highscore: " + highScore.ToString();
+        highscore.text = highScore.ToString();
         currentCoinsUI.text = coinManager.currentCoins.ToString();
-        currentScoreUI.text = "Score" + currentScore.ToString();
+        currentScoreUI.text = "Score: " + currentScore.ToString();
         totalCoinsUI.text = totalCoins.ToString();
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void PauseGame()
@@ -118,12 +133,14 @@ public class BallScript : MonoBehaviour
             {
                 Time.timeScale = 1f;
                 pauseUI.SetActive(false);
+                GameUI.SetActive(true);
                 isGamePaused = false;
             }
             else
             {
                 Time.timeScale = 0f;
                 pauseUI.SetActive(true);
+                GameUI.SetActive(false);
                 isGamePaused = true;
             }
         }
@@ -135,8 +152,25 @@ public class BallScript : MonoBehaviour
             canJump = true;
         }
 
+        if (collision.gameObject.CompareTag("ChanceObstacle"))
+        {
+            if (hasChance)
+            {
+                hasChance = false;
+
+                // Revert to last safe position
+                ballRigidBody.position = lastSafePosition;
+                ballRigidBody.velocity = Vector3.zero;
+            }
+            else
+            {
+                Death();
+            }
+        }
+
         if (collision.gameObject.CompareTag("Bombs"))
         {
+            gameSounds.PlayOneShot(hitSound);
             Death();
         }
     }

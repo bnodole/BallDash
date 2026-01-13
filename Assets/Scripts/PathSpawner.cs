@@ -12,20 +12,6 @@ public class PathSpawner : MonoBehaviour
 
     public BallScript ballScript;
 
-   /* private void Start()
-    {
-        levelHolder = path;
-    }
-    private void Update()
-    {
-        if(ballScript.currentScore > 1000 && switchPath)
-        {
-            levelHolder = path1;
-            levelHolder.GetChild(0).transform.position = path.GetChild(3).position + new Vector3(0, 0, 150);
-            switchPath = false;
-        }
-    }*/
-
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision.gameObject.name);

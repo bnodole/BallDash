@@ -8,6 +8,7 @@ TagManager:
   - Coins
   - Bombs
   - Bridge
+  - ChanceObstacle
   layers:
   - Default
   - TransparentFX
