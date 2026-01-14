@@ -31,6 +31,7 @@ public class BallScript : MonoBehaviour
 
     public GameObject pauseUI;
     public GameObject GameUI;
+    public GameObject settingUI;
     bool isGamePaused;
     bool hasChance = true;
     public Vector3 lastSafePosition;
@@ -46,6 +47,7 @@ public class BallScript : MonoBehaviour
         totalCoins = PlayerPrefs.GetInt("Coins");
         deathUI.SetActive(false);
         pauseUI.SetActive(false);
+        settingUI.SetActive(false);
     }
 
     void FixedUpdate()

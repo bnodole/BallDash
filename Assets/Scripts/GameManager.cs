@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject pauseUI;
-    public GameObject GameUI;
+    public GameObject gameUI;
+    public GameObject settingsUI;
+    public GameObject homeUI;
+    public GameObject shopUI;
     public void GameStart()
     {
         Time.timeScale = 1f;
@@ -17,26 +20,45 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         pauseUI.SetActive(true);
-        GameUI.SetActive(false);
+        gameUI.SetActive(false);
     }
 
     public void ResumeGame()
     {
         pauseUI.SetActive(false);
-        GameUI.SetActive(true);
+        gameUI.SetActive(true);
         Time.timeScale = 1f;
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        GameUI.SetActive(true);
+        gameUI.SetActive(true);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Back()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShopButton()
+    {
+        shopUI.SetActive(true);
+        homeUI.SetActive(false);
+    }
+
+    public void Settings()
+    {
+        settingsUI.SetActive(true);
+        homeUI.SetActive(false);
+    }
+
+    public void CrossButton()
+    {
+        shopUI.SetActive(false);
+        settingsUI.SetActive(false);
+        homeUI.SetActive(true);
     }
 
     public void QuitGame()
