@@ -31284,10 +31284,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1450716226}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: CrossButton
-        m_Mode: 1
+      - m_Target: {fileID: 1882161141}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -49212,6 +49212,7 @@ MonoBehaviour:
   gameUI: {fileID: 2080103770}
   settingsUI: {fileID: 1882161141}
   homeUI: {fileID: 885527805}
+  shopUI: {fileID: 0}
 --- !u!4 &1450716227
 Transform:
   m_ObjectHideFlags: 0
@@ -68806,6 +68807,13 @@ MonoBehaviour:
   lastSafePosition: {x: 0, y: 0, z: 0}
   gameSounds: {fileID: 870474661}
   hitSound: {fileID: 8300000, guid: e2e355d7452fd2a45badd4da30e9042b, type: 3}
+  playerSkinMaterials:
+  - {fileID: 2100000, guid: c8155088d610d1b44985bdfc74d764c1, type: 2}
+  - {fileID: 2100000, guid: ce5338584f89ee442987316e5f0e18cf, type: 2}
+  - {fileID: 2100000, guid: c2639b386d517bd4883785745f5d911e, type: 2}
+  - {fileID: 2100000, guid: 7a3f8123229c63346a882af6ec999c85, type: 2}
+  - {fileID: 2100000, guid: 2af8672086ecf0f4b8dab9797c92a699, type: 2}
+  - {fileID: 2100000, guid: 53e5bbdef0ec88a488dbf5f838e17479, type: 2}
 --- !u!135 &2036632361
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -68839,7 +68847,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

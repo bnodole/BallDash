@@ -42,23 +42,10 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void ShopButton()
-    {
-        shopUI.SetActive(true);
-        homeUI.SetActive(false);
-    }
-
     public void Settings()
     {
         settingsUI.SetActive(true);
         homeUI.SetActive(false);
-    }
-
-    public void CrossButton()
-    {
-        shopUI.SetActive(false);
-        settingsUI.SetActive(false);
-        homeUI.SetActive(true);
     }
 
     public void QuitGame()

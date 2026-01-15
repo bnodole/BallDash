@@ -38,6 +38,8 @@ public class BallScript : MonoBehaviour
 
     public AudioSource gameSounds;
     public AudioClip hitSound;
+
+    public Material[] playerSkinMaterials;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,8 @@ public class BallScript : MonoBehaviour
         deathUI.SetActive(false);
         pauseUI.SetActive(false);
         settingUI.SetActive(false);
+        Debug.Log(PlayerPrefs.GetInt("EquippedSkin"));
+        this.GetComponent<MeshRenderer>().material = playerSkinMaterials[PlayerPrefs.GetInt("EquippedSkin")];
     }
 
     void FixedUpdate()
