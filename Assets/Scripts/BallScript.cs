@@ -97,7 +97,7 @@ public class BallScript : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump") && canJump)
         {
-            ballRigidBody.AddForce(new Vector3(0, 5, 0), ForceMode.Impulse);
+            ballRigidBody.AddForce(new Vector3(0, 6, 0), ForceMode.Impulse);
             canJump = false;
         }
     }
