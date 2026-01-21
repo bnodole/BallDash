@@ -9,6 +9,10 @@ TagManager:
   - Bombs
   - Bridge
   - ChanceObstacle
+  - Invisible
+  - SpeedPower
+  - Magnet
+  - MagnetArea
   layers:
   - Default
   - TransparentFX

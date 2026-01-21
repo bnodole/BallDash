@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,151 +5,58 @@ public class ShopManager : MonoBehaviour
 {
     public Text coins;
     int coin;
+
     public Button[] buyButton;
     public Button[] selectButton;
-    int price;
+
     public Transform itemHolder;
 
-    private void Update()
+    void Start()
     {
-        coins.text = PlayerPrefs.GetInt("Coins").ToString();
-        coin = PlayerPrefs.GetInt("Coins");
-        if(PlayerPrefs.GetInt("isItem1Bought") == 1)
+        UpdateShopUI();
+    }
+
+    void UpdateShopUI()
+    {
+        coin = PlayerPrefs.GetInt("Coins", 0);
+        coins.text = coin.ToString();
+
+        for (int i = 0; i < buyButton.Length; i++)
         {
-            buyButton[0].gameObject.SetActive(false);
-            selectButton[0].gameObject.SetActive(true);
-        }
-        if(PlayerPrefs.GetInt("isItem2Bought") == 1)
-        {
-            buyButton[1].gameObject.SetActive(false);
-            selectButton[1].gameObject.SetActive(true);
-        }
-        if (PlayerPrefs.GetInt("isItem3Bought") == 1)
-        {
-            buyButton[1].gameObject.SetActive(false);
-            selectButton[1].gameObject.SetActive(true);
-        }
-        if (PlayerPrefs.GetInt("isItem4Bought") == 1)
-        {
-            buyButton[1].gameObject.SetActive(false);
-            selectButton[1].gameObject.SetActive(true);
-        }
-        if (PlayerPrefs.GetInt("isItem5Bought") == 1)
-        {
-            buyButton[1].gameObject.SetActive(false);
-            selectButton[1].gameObject.SetActive(true);
-        }
-        if (PlayerPrefs.GetInt("isItem6Bought") == 1)
-        {
-            buyButton[1].gameObject.SetActive(false);
-            selectButton[1].gameObject.SetActive(true);
+            bool isBought = PlayerPrefs.GetInt("isItem" + (i + 1) + "Bought", 0) == 1;
+
+            buyButton[i].gameObject.SetActive(!isBought);
+            selectButton[i].gameObject.SetActive(isBought);
         }
     }
 
     public void BuyItem(int itemIndex)
     {
-        price = int.Parse(itemHolder.GetChild(itemIndex).GetChild(1).GetComponent<Text>().text);
-        if (coin >= price)
-        {
-            switch (itemIndex)
-            {
-                case 0:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem1Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-                case 1:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem2Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-                case 2:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem3Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-                case 3:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem4Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-                case 4:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem5Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-                case 5:
-                    coin -= price;
-                    PlayerPrefs.SetInt("Coins", coin);
-                    PlayerPrefs.SetInt("isItem6Bought", 1);
-                    buyButton[itemIndex].gameObject.SetActive(false);
-                    selectButton[itemIndex].gameObject.SetActive(true);
-                    break;
-            }
-        }
-        else
+        int price = int.Parse(
+            itemHolder.GetChild(itemIndex).GetChild(1).GetComponent<Text>().text
+        );
+
+        if (coin < price)
         {
             Debug.Log("Insufficient Balance");
+            return;
         }
+
+        coin -= price;
+        PlayerPrefs.SetInt("Coins", coin);
+        PlayerPrefs.SetInt("isItem" + (itemIndex + 1) + "Bought", 1);
+
+        UpdateShopUI();
     }
 
     public void BuyButton(int itemIndex)
     {
-        switch (itemIndex)
-        {
-            case 0:
-                BuyItem(itemIndex);
-                break;
-            case 1:
-                BuyItem(itemIndex);
-                break;
-            case 2:
-                BuyItem(itemIndex);
-                break;
-            case 3:
-                BuyItem(itemIndex);
-                break;
-            case 4:
-                BuyItem(itemIndex);
-                break;
-            case 5:
-                BuyItem(itemIndex);
-                break;
-        }
+        BuyItem(itemIndex);
     }
 
     public void SelectButton(int itemIndex)
     {
-        switch (itemIndex)
-        {
-            case 0:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-            case 3:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-            case 4:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-            case 5:
-                PlayerPrefs.SetInt("EquippedSkin", itemIndex);
-                break;
-        }
+        PlayerPrefs.SetInt("EquippedSkin", itemIndex);
+        Debug.Log("Selected Item: " + itemIndex);
     }
 }

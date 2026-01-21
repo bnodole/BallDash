@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,17 @@ public class GameManager : MonoBehaviour
     public GameObject settingsUI;
     public GameObject homeUI;
     public GameObject shopUI;
+
+
+
+    public  int currentCoins;
+
+    public float pullSpeed = 10f;
+
+    public Text coinText;
+
+    public AudioSource gameSounds;
+    public AudioClip coinSound;
     public void GameStart()
     {
         Time.timeScale = 1f;

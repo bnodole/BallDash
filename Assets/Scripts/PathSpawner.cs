@@ -23,10 +23,19 @@ public class PathSpawner : MonoBehaviour
             {
                 Debug.Log("kasbdkjd");
                 levelHolder.GetChild(0).transform.position = levelHolder.GetChild(levelHolder.childCount-1).position + new Vector3(0, 0, 150);
-                coinHolder = levelHolder.GetChild(0).GetChild(0);
+                coinHolder = levelHolder.GetChild(0).GetChild(1);
                 for (int i = 0; i < coinHolder.childCount; i++)
                 {
-                    coinHolder.GetChild(i).gameObject.SetActive(true);
+                    Transform coin = coinHolder.GetChild(i);
+
+                    // keep parent (path)
+                    coin.SetParent(coinHolder, false);
+
+                    // reset LOCAL position
+                    coin.localPosition = coin.GetComponent<RotateCoins>().origPosition;
+
+                    // optional
+                    coin.gameObject.SetActive(true);
                 }
                 levelHolder.GetChild(0).SetSiblingIndex(levelHolder.childCount - 1);
             }

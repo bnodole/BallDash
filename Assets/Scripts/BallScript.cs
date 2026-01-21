@@ -8,6 +8,7 @@ public class BallScript : MonoBehaviour
 {
     public Rigidbody ballRigidBody;
     public float speed;
+    public float baseSpeed;
     public bool canJump = true;
     public int horizontalMovement;
 
@@ -18,8 +19,10 @@ public class BallScript : MonoBehaviour
     public Text scoreText;
     public int highScore;
 
+
+    GameManager gameManager;
+
     public int totalCoins;
-    public CoinManager coinManager;
 
     public GameObject deathUI;
     public Text highscore;
@@ -33,18 +36,19 @@ public class BallScript : MonoBehaviour
     public GameObject GameUI;
     public GameObject settingUI;
     bool isGamePaused;
-    bool hasChance = true;
     public Vector3 lastSafePosition;
 
     public AudioSource gameSounds;
     public AudioClip hitSound;
 
+    public GameObject magnetArea;
     public Material[] playerSkinMaterials;
     // Start is called before the first frame update
     void Start()
     {
         startPosition = transform.position;
-        coinManager = GetComponent<CoinManager>();
+        baseSpeed = speed;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         highScore = PlayerPrefs.GetInt("Highscore");
         totalCoins = PlayerPrefs.GetInt("Coins");
         deathUI.SetActive(false);
@@ -66,7 +70,6 @@ public class BallScript : MonoBehaviour
         BallMovement();
         ScoreManager();
         PauseGame();
-        speed += 0.005f*Time.deltaTime;
     }
 
     void BallMovement()
@@ -107,6 +110,9 @@ public class BallScript : MonoBehaviour
         distance = Vector3.Distance(transform.position , startPosition);
         currentScore = (int)distance*10;
         scoreText.text = currentScore.ToString();
+        int multiplier = currentScore / 5000;
+        speed = baseSpeed * (1f + multiplier * 0.2f);
+
     }
 
     void Death()
@@ -119,14 +125,14 @@ public class BallScript : MonoBehaviour
             PlayerPrefs.SetInt("Highscore", highScore);
             newhighscore.text = "New HighSore";
         }
-        totalCoins += coinManager.currentCoins;
+        totalCoins += gameManager.currentCoins;
         PlayerPrefs.SetInt("Coins", totalCoins);
         Debug.Log(PlayerPrefs.GetInt("Coins"));
         gamePlayUI.SetActive(false);
         deathUI.SetActive(true);
         Time.timeScale = 0f;
         highscore.text = highScore.ToString();
-        currentCoinsUI.text = coinManager.currentCoins.ToString();
+        currentCoinsUI.text = gameManager.currentCoins.ToString();
         currentScoreUI.text = "Score: " + currentScore.ToString();
         totalCoinsUI.text = totalCoins.ToString();
     }
@@ -156,22 +162,6 @@ public class BallScript : MonoBehaviour
         if(collision.gameObject.tag == "Base")
         {
             canJump = true;
-        }
-
-        if (collision.gameObject.CompareTag("ChanceObstacle"))
-        {
-            if (hasChance)
-            {
-                hasChance = false;
-
-                // Revert to last safe position
-                ballRigidBody.position = lastSafePosition;
-                ballRigidBody.velocity = Vector3.zero;
-            }
-            else
-            {
-                Death();
-            }
         }
 
         if (collision.gameObject.CompareTag("Bombs"))
