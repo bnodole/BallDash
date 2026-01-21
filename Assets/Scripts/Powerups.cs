@@ -13,15 +13,20 @@ public class Powerups : MonoBehaviour
             other.gameObject.SetActive(false);
             
             StartCoroutine(ChangePowerUpStatus());
-            
+
+            other.gameObject.SetActive(true);
         }
         if (other.gameObject.CompareTag("SpeedPower"))
         {
+            other.gameObject.SetActive(false);
             StartCoroutine(ChangeSpeedPowerUp());
+            other.gameObject.SetActive(true);
         }
         if (other.gameObject.CompareTag("Magnet"))
         {
+            other.gameObject.SetActive(false);
             StartCoroutine(CHangeMagnetPowerUp());
+            other.gameObject.SetActive(true);
         }
     }
     IEnumerator ChangePowerUpStatus()
